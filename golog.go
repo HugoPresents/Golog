@@ -9,8 +9,8 @@ import (
 
 type data struct {
     Title string
-    IndexString string
-    LayoutString string
+    Css []string
+    Script []string
 }
 
 func test() {
@@ -23,7 +23,7 @@ func main() {
         http.HandleFunc(rule, funcname)
     }
     // static files
-    http.Handle("/static/", http.FileServer(http.Dir(settings["root"]+"/static")))
+    http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(settings["root"]+"/static"))))
     err := http.ListenAndServe(":8888", nil)
     if err != nil {
         log.Fatal("ListenAndServe: ", err)
