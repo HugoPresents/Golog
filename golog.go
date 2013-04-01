@@ -21,8 +21,12 @@ func main() {
     }
 }
 
-func render(tplName string, w http.ResponseWriter, r *http.Request) {
-    t, _ := template.ParseFiles("templates/layout.html", "templates/"+tplName+".html")
-    t.ExecuteTemplate(w, "layout", nil)
-    t.Execute(w, nil)
+func render(tplName string) *template.Template{
+    templateDir := settings["root"]+settings["template"]
+    t, err := template.ParseFiles(templateDir+"layout.html", templateDir+tplName+".html")
+    if err != nil {
+        fmt.Printf("\n#Template Dir: \n%s\n", templateDir)
+        fmt.Printf("Error : %v\n", err)
+    }
+    return t
 }
