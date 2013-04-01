@@ -15,6 +15,7 @@ func index(w http.ResponseWriter, r *http.Request) {
     */
     //render("index", w, r)
     t := render("index")
-    t.ExecuteTemplate(w, "layout", nil)
+    d := data{Title:"Golog"}
+    t.ExecuteTemplate(w, "layout", d)
     t.Execute(w, nil)
 }

@@ -7,14 +7,23 @@ import (
     "text/template"
 )
 
+type data struct {
+    Title string
+    IndexString string
+    LayoutString string
+}
+
 func test() {
     fmt.Printf("hello Golog!\n")
 }
 
 func main() {
+    // func routers
     for rule, funcname := range Urls {
         http.HandleFunc(rule, funcname)
     }
+    // static files
+    http.Handle("/static/", http.FileServer(http.Dir(settings["root"]+"/static")))
     err := http.ListenAndServe(":8888", nil)
     if err != nil {
         log.Fatal("ListenAndServe: ", err)

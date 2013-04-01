@@ -1,5 +1,13 @@
 {{define "layout"}}
-<h2>This is layout</h2>
-{{template "index"}}
-<h2>This is layout</h2>
+<html>
+    <head>
+        <title>{{.Title}}</title>
+        <script type="text/javascript" src="/static/jquery-1.9.1.min.js"></script>
+    </head>
+    <body>
+        <h2>This is layout string{{.Title}}</h2>
+            {{template "index"}}
+        <h2>This is layout</h2>
+    </body>
+</html>
 {{end}}
