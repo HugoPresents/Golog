@@ -2,8 +2,9 @@ package main
 
 import (
     "fmt"
+    "log"
     "net/http"
-    "runtime"
+    "text/template"
 )
 
 func test() {
@@ -12,6 +13,16 @@ func test() {
 
 func main() {
     for rule, funcname := range Urls {
-        http.HandleFunc("/", runtime.FuncForPC(funcname))
+        http.HandleFunc(rule, funcname)
     }
+    err := http.ListenAndServe(":8888", nil)
+    if err != nil {
+        log.Fatal("ListenAndServe: ", err)
+    }
+}
+
+func render(tplName string, w http.ResponseWriter, r *http.Request) {
+    t, _ := template.ParseFiles("templates/layout.html", "templates/"+tplName+".html")
+    t.ExecuteTemplate(w, "layout", nil)
+    t.Execute(w, nil)
 }

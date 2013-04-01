@@ -1,5 +1,9 @@
 package main
 
-var Urls = map[string]*Func {
-    "/" : func index(),
+import (
+    "net/http"
+)
+
+var Urls = map[string]func(http.ResponseWriter, *http.Request) {
+    "/" : index,
 }
