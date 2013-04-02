@@ -2,7 +2,7 @@ package main
 
 import (
     "fmt"
-    //"log"
+    "log"
     "os"
     "net/http"
     "text/template"
@@ -15,27 +15,24 @@ type data struct {
     Script []string
 }
 
+var settings map[string]string
+
 func main() {
     // func routers
-    setting := loadSettings()
-    fmt.Printf("%v\n", setting)
-    m := setting.(map[string]interface{})
-    fmt.Printf("%v\n", m)
+    settings = loadSettings()
     for rule, funcname := range Urls {
         http.HandleFunc(rule, funcname)
     }
     // static files
-    /*
     http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(settings["root"]+"/static"))))
     err := http.ListenAndServe(":8888", nil)
     if err != nil {
         log.Fatal("ListenAndServe: ", err)
     }
-    */
 }
 
-func loadSettings() interface{} {
-    var j interface{}
+func loadSettings() map[string]string {
+    var j map[string]string
     f, _ := os.Open("./settings.json")
     //settings := string("")
     buf := make([]byte, 1024)

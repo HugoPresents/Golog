@@ -1,1 +1,5 @@
-{"servers":[{"serverName":"Shanghai_VPN","serverIP":"127.0.0.1"},{"serverName":"Beijing_VPN","serverIP":"127.0.0.2"}]}
+{
+    "root" : "/media/htdocs/go/src/Golog/",
+    "template" : "templates/",
+    "static" : "static/"
+}
