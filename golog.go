@@ -9,7 +9,7 @@ import (
     "encoding/json"
 )
 
-type data struct {
+type layout_data struct {
     Title string
     Css []string
     Script []string

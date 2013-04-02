@@ -11,9 +11,7 @@
         <script type="text/javascript" src="/static/bootstrap/js/bootstrap.js"></script>
     </head>
     <body>
-        <div class="container">
-            <!-- Header start -->
-            <div class="navbar navbar-inverse">
+            <div class="navbar navbar-inverse navbar-fixed-top">
               <div class="navbar-inner">
                 <div class="container">
                   <a class="btn btn-navbar" data-toggle="collapse" data-target=".navbar-responsive-collapse">
@@ -61,7 +59,13 @@
                 </div>
               </div><!-- /navbar-inner -->
             </div><!-- /navbar -->
-            <!-- Header end -->
+            <header>
+              <div class="container">
+                <h1>Golog</h1>
+                <p class="lead">golang blog</p>
+              </div>
+            </header>
+            <div class="container">
             {{template "index"}}
         </div>
     </body>
