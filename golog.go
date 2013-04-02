@@ -24,7 +24,7 @@ func main() {
         http.HandleFunc(rule, funcname)
     }
     // static files
-    http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(settings["root"]+"/static"))))
+    http.Handle("/static/", http.StripPrefix("/static", http.FileServer(http.Dir(settings["root"]+settings["static"]))))
     err := http.ListenAndServe(":8888", nil)
     if err != nil {
         log.Fatal("ListenAndServe: ", err)
