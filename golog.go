@@ -9,7 +9,7 @@ import (
     "encoding/json"
 )
 
-type layout_data struct {
+type layoutData struct {
     Title string
     SubTpl string
     Css []string
@@ -42,15 +42,28 @@ func loadSettings() map[string]string {
     return j
 }
 
-func render(w http.ResponseWriter, tplName string) {
+func renderSingle(w http.ResponseWriter, tplName string) {
     templateDir := settings["root"]+settings["template"]
-    t, err := template.ParseFiles(templateDir+"header.html", templateDir+tplName+".html", templateDir+"footer.html")
+    t, err := template.ParseFiles(templateDir+tplName+".html")
     if err != nil {
         fmt.Printf("\n#Template Dir: \n%s\n", templateDir)
         fmt.Printf("Error : %v\n", err)
     }
-    t.ExecuteTemplate(w, "header", nil)
     t.ExecuteTemplate(w, tplName, nil)
-    t.ExecuteTemplate(w, "footer", nil)
-    t.Execute(w, nil)
+}
+
+func renderLayout(w http.ResponseWriter, tplName string, layout ...string) {
+    templateDir := settings["root"]+settings["template"]
+    layoutName := "layout"
+    if len(layout) > 0 {
+        layoutName = layout[0]
+    }
+    t, err := template.ParseFiles(templateDir+layoutName+".html", templateDir+tplName+".html")
+    if err != nil {
+        fmt.Printf("\n#Template Dir: \n%s\n", templateDir)
+        fmt.Printf("Error : %v\n", err)
+    }
+    layout_data := layoutData{Title : "Golog", SubTpl : tplName}
+    t.ExecuteTemplate(w, "layout", layout_data)
+    t.ExecuteTemplate(w, tplName, nil)
 }

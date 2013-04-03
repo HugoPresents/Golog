@@ -5,9 +5,10 @@ import (
 )
 
 func index(w http.ResponseWriter, r *http.Request) {
-    render(w, "index")
+    //render(w, "index")
+    renderLayout(w, "index")
 }
 
 func login(w http.ResponseWriter, r *http.Request) {
-    render(w, "login")
+    renderSingle(w, "login")
 }
