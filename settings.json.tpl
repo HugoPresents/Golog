@@ -1,5 +1,7 @@
 {
     "root" : "/media/htdocs/go/src/Golog/",
     "template" : "templates/",
-    "static" : "static/"
+    "static" : "static/",
+    "admin" : "root",
+    "admin_pass" : "root"
 }

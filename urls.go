@@ -6,4 +6,5 @@ import (
 
 var Urls = map[string]func(http.ResponseWriter, *http.Request) {
     "/" : index,
+    "/login" : login,
 }

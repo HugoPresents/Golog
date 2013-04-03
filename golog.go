@@ -11,6 +11,7 @@ import (
 
 type layout_data struct {
     Title string
+    SubTpl string
     Css []string
     Script []string
 }
@@ -41,12 +42,15 @@ func loadSettings() map[string]string {
     return j
 }
 
-func render(tplName string) *template.Template{
+func render(w http.ResponseWriter, tplName string) {
     templateDir := settings["root"]+settings["template"]
-    t, err := template.ParseFiles(templateDir+"layout.html", templateDir+tplName+".html")
+    t, err := template.ParseFiles(templateDir+"header.html", templateDir+tplName+".html", templateDir+"footer.html")
     if err != nil {
         fmt.Printf("\n#Template Dir: \n%s\n", templateDir)
         fmt.Printf("Error : %v\n", err)
     }
-    return t
+    t.ExecuteTemplate(w, "header", nil)
+    t.ExecuteTemplate(w, tplName, nil)
+    t.ExecuteTemplate(w, "footer", nil)
+    t.Execute(w, nil)
 }
