@@ -11,7 +11,6 @@ import (
 
 type layoutData struct {
     Title string
-    SubTpl string
     Css []string
     Script []string
 }
@@ -52,7 +51,7 @@ func renderSingle(w http.ResponseWriter, tplName string) {
     t.ExecuteTemplate(w, tplName, nil)
 }
 
-func renderLayout(w http.ResponseWriter, tplName string, layout ...string) {
+func renderLayout(w http.ResponseWriter, tplName string, layout_data interface{}, content_data interface{}, layout ...string) {
     templateDir := settings["root"]+settings["template"]
     layoutName := "layout"
     if len(layout) > 0 {
@@ -63,7 +62,7 @@ func renderLayout(w http.ResponseWriter, tplName string, layout ...string) {
         fmt.Printf("\n#Template Dir: \n%s\n", templateDir)
         fmt.Printf("Error : %v\n", err)
     }
-    layout_data := layoutData{Title : "Golog", SubTpl : tplName}
+    //layout_data := layoutData{Title : "", SubTpl : tplName}
     t.ExecuteTemplate(w, "layout", layout_data)
-    t.ExecuteTemplate(w, tplName, nil)
+    t.ExecuteTemplate(w, tplName, content_data)
 }
