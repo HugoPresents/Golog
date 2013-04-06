@@ -73,7 +73,7 @@ func renderLayout(w http.ResponseWriter, tplName string, layout_data interface{}
         fmt.Printf("\n#Template Dir: \n%s\n", templateDir)
         fmt.Printf("Error : %v\n", err)
     }
-    //layout_data := layoutData{Title : "", SubTpl : tplName}
-    t.ExecuteTemplate(w, "layout", layout_data)
+    //fmt.Printf("Layout name :%s\n", layoutName)
+    t.ExecuteTemplate(w, layoutName, layout_data)
     t.ExecuteTemplate(w, tplName, content_data)
 }
