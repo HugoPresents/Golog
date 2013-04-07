@@ -9,4 +9,5 @@ var Urls = map[string]func(http.ResponseWriter, *http.Request) {
     "/login" : login,
     "/admin/" : b_index,
     "/admin/comment" : b_comment,
+    "/admin/create_cat" : create_cat,
 }

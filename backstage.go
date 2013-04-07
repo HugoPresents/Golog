@@ -20,7 +20,9 @@ func create_post(w http.ResponseWriter, r *http.Request) {
 }
 
 func create_cat(w http.ResponseWriter, r *http.Request) {
-
+    layout_data := layoutData{Title : "Create Category"}
+    index_data := bIndexData{Title : "创建分类"}
+    renderLayout(w, "create_cat", layout_data, index_data, "b_layout")
 }
 
 func create_page(w http.ResponseWriter, r *http.Request) {
