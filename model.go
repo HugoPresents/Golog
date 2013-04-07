@@ -25,8 +25,11 @@ func (model *Model) update() {
 
 }
 
-func (model *Model) insert() {
-
+func (model *Model) insert(map[string]string) {
+    stmt, err := db.Prepare("INSERT userinfo SET username=?,departname=?,created=?")
+    checkErr(err)
+    res, err := stmt.Exec("astaxie", "研发部门", "2012-12-09")
+    checkErr(err)
 }
 /* Model struct end */
 

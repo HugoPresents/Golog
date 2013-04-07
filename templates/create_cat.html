@@ -1,7 +1,13 @@
 {{define "create_cat"}}
-    <form method="post">
-        <p>
-            <input name="name" type="text">
-        </p>
-    </form>
+<form method="post">
+    <fieldset>
+        <legend>创建分类</legend>
+        <label>分类名</label>
+        <input type="text" name="name" placeholder="English please">
+        <label>显示名</label>
+        <input type="text" name="display_name">
+        <span class="help-block"></span>
+        <button type="submit" class="btn">Submit</button>
+    </fieldset>
+</form>
 {{end}}
