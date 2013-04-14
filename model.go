@@ -25,11 +25,22 @@ func (model *Model) update() {
 
 }
 
-func (model *Model) insert(map[string]string) {
-    stmt, err := db.Prepare("INSERT userinfo SET username=?,departname=?,created=?")
-    checkErr(err)
-    res, err := stmt.Exec("astaxie", "研发部门", "2012-12-09")
-    checkErr(err)
+func (model *Model) insert(data map[string]string) {
+    sql := "INSERT category SET "
+    if len(data) < 1 {
+        fmt.Print("no data!")
+        return
+    }
+    params := make([]interface{}, len(data))
+    i := 0
+    for column, value := range(data) {
+        params[i] = value
+        sql += column + "=?, "
+        i ++
+    }
+    sql = strings.Trim(sql, ", ")
+    stmt, err := db.Prepare(sql)
+    res, err := stmt.Exec(params...)
 }
 /* Model struct end */
 
