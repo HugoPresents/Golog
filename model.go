@@ -1,8 +1,19 @@
+/*
+    data provider
+*/
 package main
+
+import (
+    "fmt"
+    "strings"
+    "github.com/mikespook/mymysql/mysql"
+    _ "github.com/mikespook/mymysql/native"
+)
 
 /* Model Struct*/
 type Model struct {
     TableName string
+    Db mysql.Conn
 }
 
 func (model *Model) fetchOne() {
@@ -26,7 +37,8 @@ func (model *Model) update() {
 }
 
 func (model *Model) insert(data map[string]string) {
-    sql := "INSERT category SET "
+    
+    sql := "INSERT "+model.TableName+" SET "
     if len(data) < 1 {
         fmt.Print("no data!")
         return
@@ -39,8 +51,10 @@ func (model *Model) insert(data map[string]string) {
         i ++
     }
     sql = strings.Trim(sql, ", ")
-    stmt, err := db.Prepare(sql)
-    res, err := stmt.Exec(params...)
+    stmt, err := model.Db.Prepare(sql)
+    res, err := stmt.Run(params...)
+    checkErr(err)
+    fmt.Println("%v", res)
 }
 /* Model struct end */
 
@@ -73,18 +87,42 @@ type PageModel struct {
 /* Page Model end */
 
 /* model generator */
+
+func newModel() Model {
+    db := mysql.New("tcp", "", settings["db_host"]+":"+settings["db_port"], settings["db_user"], settings["db_pass"], settings["db_name"])
+    err := db.Connect()
+    if err != nil {
+        panic(err)
+    }
+    return Model{Db:db}
+}
+
 func newPostModel() *PostModel {
-    return &PostModel{Model{"post"}}
+    model := newModel()
+    model.TableName = "post"
+    return &PostModel{model}
 }
 
 func newCatModel() *CatModel {
-    return &CatModel{Model{"category"}}
+    model := newModel()
+    model.TableName = "category"
+    return &CatModel{model}
 }
 
 func newCommentModel() *CommentModel {
-    return &CommentModel{Model{"comment"}}
+    model := newModel()
+    model.TableName = "comment"
+    return &CommentModel{model}
 }
 
 func newPageModel() *PageModel {
-    return &PageModel{Model{"page"}}
+    model := newModel()
+    model.TableName = "page"
+    return &PageModel{model}
+}
+
+func checkErr(err error) {
+    if err != nil {
+        panic(err)
+    }
 }

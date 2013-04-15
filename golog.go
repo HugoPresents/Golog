@@ -7,8 +7,6 @@ import (
     "net/http"
     "text/template"
     "encoding/json"
-    _ "github.com/Go-SQL-Driver/MySQL"
-    "database/sql"
 )
 
 type layoutData struct {
@@ -18,18 +16,16 @@ type layoutData struct {
 }
 
 var settings map[string]string
-var db interface{}
 
 func main() {
     // load settings
     settings = loadSettings()
     // db driver
     //fmt.Printf("%s\n", settings["db_user"]+":"+settings["db_pass"]+"@tcp("+settings["db_host"]+")/"+settings["db_name"])
+    /*
     var db_err error
     db, db_err = sql.Open("mysql", settings["db_user"]+":"+settings["db_pass"]+"@tcp("+settings["db_host"]+":"+settings["db_port"]+")/"+settings["db_name"])
-    if db_err != nil {
-        fmt.Printf("Incorrect db connect args")
-    }
+    */
     // func routers
     for rule, funcname := range Urls {
         http.HandleFunc(rule, funcname)
