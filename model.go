@@ -36,8 +36,7 @@ func (model *Model) update() {
 
 }
 
-func (model *Model) insert(data map[string]string) {
-    
+func (model *Model) insert(data map[string]interface{}) {
     sql := "INSERT "+model.TableName+" SET "
     if len(data) < 1 {
         fmt.Print("no data!")
@@ -55,6 +54,10 @@ func (model *Model) insert(data map[string]string) {
     res, err := stmt.Run(params...)
     checkErr(err)
     fmt.Println("%v", res)
+}
+
+func (model *Model) lastInsertId() {
+    model.Db.Query("select last_insert_id() as id from" + model.TableName)
 }
 /* Model struct end */
 
@@ -94,6 +97,7 @@ func newModel() Model {
     if err != nil {
         panic(err)
     }
+    db.Query("set names "+ settings["db_charset"])
     return Model{Db:db}
 }
 
