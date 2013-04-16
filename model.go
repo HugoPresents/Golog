@@ -36,11 +36,11 @@ func (model *Model) update() {
 
 }
 
-func (model *Model) insert(data map[string]interface{}) {
+func (model *Model) insert(data map[string]interface{}) int {
     sql := "INSERT "+model.TableName+" SET "
     if len(data) < 1 {
         fmt.Print("no data!")
-        return
+        return 0
     }
     params := make([]interface{}, len(data))
     i := 0
@@ -53,11 +53,14 @@ func (model *Model) insert(data map[string]interface{}) {
     stmt, err := model.Db.Prepare(sql)
     res, err := stmt.Run(params...)
     checkErr(err)
-    fmt.Println("%v", res)
+    fmt.Print("%v", res)
+    return model.lastInsertId()
 }
 
-func (model *Model) lastInsertId() {
-    model.Db.Query("select last_insert_id() as id from" + model.TableName)
+func (model *Model) lastInsertId() int {
+    _, res, err := model.Db.Query("select last_insert_id() as id limit 1")
+    checkErr(err)
+    return 0
 }
 /* Model struct end */
 

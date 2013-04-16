@@ -20,12 +20,6 @@ var settings map[string]string
 func main() {
     // load settings
     settings = loadSettings()
-    // db driver
-    //fmt.Printf("%s\n", settings["db_user"]+":"+settings["db_pass"]+"@tcp("+settings["db_host"]+")/"+settings["db_name"])
-    /*
-    var db_err error
-    db, db_err = sql.Open("mysql", settings["db_user"]+":"+settings["db_pass"]+"@tcp("+settings["db_host"]+":"+settings["db_port"]+")/"+settings["db_name"])
-    */
     // func routers
     for rule, funcname := range Urls {
         http.HandleFunc(rule, funcname)
@@ -41,7 +35,6 @@ func main() {
 func loadSettings() map[string]string {
     var j map[string]string
     f, _ := os.Open("./settings.json")
-    //settings := string("")
     buf := make([]byte, 1024)
     n, _ := f.Read(buf)
     json.Unmarshal(buf[:n], &j)
@@ -69,7 +62,6 @@ func renderLayout(w http.ResponseWriter, tplName string, layout_data interface{}
         fmt.Printf("\n#Template Dir: \n%s\n", templateDir)
         fmt.Printf("Error : %v\n", err)
     }
-    //fmt.Printf("Layout name :%s\n", layoutName)
     t.ExecuteTemplate(w, layoutName, layout_data)
     t.ExecuteTemplate(w, tplName, content_data)
 }

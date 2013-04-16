@@ -17,7 +17,7 @@ func b_index(w http.ResponseWriter, r *http.Request) {
 }
 
 func create_post(w http.ResponseWriter, r *http.Request) {
-
+    
 }
 
 func modify_cat(w http.ResponseWriter, r *http.Request) {
