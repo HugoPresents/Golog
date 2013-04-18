@@ -16,12 +16,13 @@ type Model struct {
     Db mysql.Conn
 }
 
-func (model *Model) fetchOne() {
+func (model *Model) fetchOne(data map[string]interface{}) {
+    sql := "SELECT * FROM "+model.TableName +" WHERE"
 
 }
 
 func (model *Model) fetchAll()  {
-
+    
 }
 
 func (model *Model) deleteOne() {
@@ -36,7 +37,7 @@ func (model *Model) update() {
 
 }
 
-func (model *Model) insert(data map[string]interface{}) int {
+func (model *Model) insert(data map[string]interface{}) uint64 {
     sql := "INSERT "+model.TableName+" SET "
     if len(data) < 1 {
         fmt.Print("no data!")
@@ -53,15 +54,9 @@ func (model *Model) insert(data map[string]interface{}) int {
     stmt, err := model.Db.Prepare(sql)
     res, err := stmt.Run(params...)
     checkErr(err)
-    fmt.Print("%v", res)
-    return model.lastInsertId()
+    return res.InsertId()
 }
 
-func (model *Model) lastInsertId() int {
-    _, res, err := model.Db.Query("select last_insert_id() as id limit 1")
-    checkErr(err)
-    return 0
-}
 /* Model struct end */
 
 /*  Category Model */
@@ -132,4 +127,28 @@ func checkErr(err error) {
     if err != nil {
         panic(err)
     }
+}
+
+func mapInsert() {
+
+}
+
+func mapSET(data map[string]interface{}) {
+    sql := "INSERT "+model.TableName+" SET "
+    if len(data) < 1 {
+        fmt.Print("no data!")
+        return 0
+    }
+    params := make([]interface{}, len(data))
+    i := 0
+    for column, value := range(data) {
+        params[i] = value
+        sql += column + "=?, "
+        i ++
+    }
+    sql = strings.Trim(sql, ", ")
+    stmt, err := model.Db.Prepare(sql)
+    res, err := stmt.Run(params...)
+    checkErr(err)
+    return res.InsertId()
 }

@@ -3,7 +3,7 @@ package main
 
 import (
     "net/http"
-    //"fmt"
+    "fmt"
 )
 
 type bIndexData struct {
@@ -27,7 +27,10 @@ func modify_cat(w http.ResponseWriter, r *http.Request) {
             "display_name" : r.FormValue("display_name"),
         }
         cat_model := newCatModel()
-        cat_model.insert(cat_attributes)
+        cat_id := cat_model.insert(cat_attributes)
+        url := fmt.Sprintf("/admin/modify_cat?id=%d", cat_id)
+        fmt.Printf("%s", url)
+        http.Redirect(w, r, fmt.Sprintf("/admin/modify_cat?id=%d", cat_id), 301)
     } else {
         layout_data := layoutData{Title : "Create Category"}
         index_data := bIndexData{Title : "创建分类"}
