@@ -4,7 +4,7 @@
 package main
 
 import (
-    "fmt"
+    //"fmt"
     "strings"
     "github.com/mikespook/mymysql/mysql"
     _ "github.com/mikespook/mymysql/native"
@@ -17,8 +17,8 @@ type Model struct {
 }
 
 func (model *Model) fetchOne(data map[string]interface{}) {
-    sql := "SELECT * FROM "+model.TableName +" WHERE"
-
+    sql, params := mapSql(data)
+    sql = "SELECT * FROM "+model.TableName+ " WHERE "
 }
 
 func (model *Model) fetchAll()  {
@@ -38,19 +38,8 @@ func (model *Model) update() {
 }
 
 func (model *Model) insert(data map[string]interface{}) uint64 {
-    sql := "INSERT "+model.TableName+" SET "
-    if len(data) < 1 {
-        fmt.Print("no data!")
-        return 0
-    }
-    params := make([]interface{}, len(data))
-    i := 0
-    for column, value := range(data) {
-        params[i] = value
-        sql += column + "=?, "
-        i ++
-    }
-    sql = strings.Trim(sql, ", ")
+    sql, params := mapSql(data)
+    sql = "INSERT "+model.TableName+" SET " + sql
     stmt, err := model.Db.Prepare(sql)
     res, err := stmt.Run(params...)
     checkErr(err)
@@ -129,16 +118,11 @@ func checkErr(err error) {
     }
 }
 
-func mapInsert() {
-
-}
-
-func mapSET(data map[string]interface{}) {
-    sql := "INSERT "+model.TableName+" SET "
-    if len(data) < 1 {
-        fmt.Print("no data!")
-        return 0
-    }
+/*
+ name=?, time=?
+*/
+func mapInsert(data map[string]interface{}) (string, []interface{}) {
+    var sql string
     params := make([]interface{}, len(data))
     i := 0
     for column, value := range(data) {
@@ -147,8 +131,21 @@ func mapSET(data map[string]interface{}) {
         i ++
     }
     sql = strings.Trim(sql, ", ")
-    stmt, err := model.Db.Prepare(sql)
-    res, err := stmt.Run(params...)
-    checkErr(err)
-    return res.InsertId()
+    return sql, params
+}
+
+/*
+ name =? AND time =?
+*/
+
+func mapWhere(data map[string]interface{}) (string, []interface{}) {
+    sql := "true"
+    params := make([]interface{}, len(data))
+    i := 0
+    for column, value := range(data) {
+        params[i] = value
+        sql += " AND "column + "=?"
+        i ++
+    }
+    return sql, params
 }
