@@ -7,6 +7,7 @@ import (
     "net/http"
     "text/template"
     "encoding/json"
+    "github.com/Rabbit52/goorm"
 )
 
 type layoutData struct {
@@ -14,7 +15,7 @@ type layoutData struct {
     Css []string
     Script []string
 }
-
+var orm goorm.ORM
 var settings map[string]string
 
 func main() {
@@ -26,6 +27,7 @@ func main() {
     }
     // static files
     http.Handle("/static/", http.StripPrefix("/static", http.FileServer(http.Dir(settings["root"]+settings["static"]))))
+    orm = goorm.NewORM(settings["db_host"], settings["db_port"], settings["db_name"], settings["db_user"], settings["db_pass"], settings["db_charset"])
     err := http.ListenAndServe(":8888", nil)
     if err != nil {
         log.Fatal("ListenAndServe: ", err)
@@ -64,4 +66,10 @@ func renderLayout(w http.ResponseWriter, tplName string, layout_data interface{}
     }
     t.ExecuteTemplate(w, layoutName, layout_data)
     t.ExecuteTemplate(w, tplName, content_data)
+}
+
+func checkErr(err error) {
+    if err != nil {
+        panic(err)
+    }
 }

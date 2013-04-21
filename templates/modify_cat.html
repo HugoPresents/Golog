@@ -1,11 +1,11 @@
-{{define "create_cat"}}
+{{define "modify_cat"}}
 <form method="post">
     <fieldset>
         <legend>创建分类</legend>
         <label>分类名</label>
-        <input type="text" name="name" placeholder="English please">
+        <input type="text" name="name" placeholder="English please" value="{{.Name}}">
         <label>显示名</label>
-        <input type="text" name="display_name">
+        <input type="text" name="display_name" value="{{.Display_name}}">
         <span class="help-block"></span>
         <button type="submit" class="btn">Submit</button>
     </fieldset>
