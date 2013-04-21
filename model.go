@@ -16,9 +16,9 @@ type Model struct {
     Db mysql.Conn
 }
 
-func (model *Model) fetchOne(data map[string]interface{}) {
-    sql, params := mapSql(data)
-    sql = "SELECT * FROM "+model.TableName+ " WHERE "
+func (model *Model) fetchOne(data map[string]interface{}, ) {
+    sql, params := mapWhere(data)
+    sql = "SELECT * FROM "+model.TableName+ " WHERE "+sql+" LIMIT 1"
 }
 
 func (model *Model) fetchAll()  {
@@ -38,7 +38,7 @@ func (model *Model) update() {
 }
 
 func (model *Model) insert(data map[string]interface{}) uint64 {
-    sql, params := mapSql(data)
+    sql, params := mapInsert(data)
     sql = "INSERT "+model.TableName+" SET " + sql
     stmt, err := model.Db.Prepare(sql)
     res, err := stmt.Run(params...)
