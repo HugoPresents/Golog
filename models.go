@@ -2,43 +2,43 @@ package main
 
 type Category struct {
     Id int
-    Parent_id int
-    Order_id int
-    Nav_display int
+    ParentId int
+    OrderId int
+    NavDisplay int
     Name string
-    Display_name string
+    DisplayName string
     Status int
 }
 
 type Comment struct {
     Id int
-    Post_id int
+    PostId int
     Author string
-    Author_email string
-    Author_url string
+    AuthorEmail string
+    AuthorUrl string
     Content string
-    Create_time int
+    CreateTime int
     Status int
 }
 
 type Page struct {
     Id int
     Name string
-    Display_name string
-    Nav_display int
+    DisplayName string
+    NavDisplay int
     Content string
-    Create_time int
-    Update_time int
-    Order_id int
+    CreateTime int
+    UpdateTime int
+    OrderId int
     Status int
 }
 
 type Post struct {
     Id int
-    Category_id int
+    CategoryId int
     Title string
     Content string
-    Create_time string
-    Update_time string
+    CreateTime string
+    UpdateTime string
     Status int
 }

@@ -7,7 +7,9 @@ import (
     "net/http"
     "text/template"
     "encoding/json"
-    "github.com/Rabbit52/goorm"
+    "github.com/astaxie/beedb"
+    _ "github.com/ziutek/mymysql/godrv"
+    "database/sql"
 )
 
 type layoutData struct {
@@ -15,7 +17,7 @@ type layoutData struct {
     Css []string
     Script []string
 }
-var orm goorm.ORM
+var orm beedb.Model
 var settings map[string]string
 
 func main() {
@@ -27,8 +29,13 @@ func main() {
     }
     // static files
     http.Handle("/static/", http.StripPrefix("/static", http.FileServer(http.Dir(settings["root"]+settings["static"]))))
-    orm = goorm.NewORM(settings["db_host"], settings["db_port"], settings["db_name"], settings["db_user"], settings["db_pass"], settings["db_charset"])
-    err := http.ListenAndServe(":8888", nil)
+    link := fmt.Sprintf("%s/%s/%s", settings["db_name"], settings["db_user"], settings["db_pass"])
+    db, err := sql.Open("mymysql", link)
+    if err != nil {
+        panic(err)
+    }
+    orm = beedb.New(db)
+    err = http.ListenAndServe(":8888", nil)
     if err != nil {
         log.Fatal("ListenAndServe: ", err)
     }
