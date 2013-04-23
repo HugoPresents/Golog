@@ -7,7 +7,7 @@ import (
 var Urls = map[string]func(http.ResponseWriter, *http.Request) {
     "/" : index,
     "/login" : login,
-    "/admin/" : b_index,
-    "/admin/comment" : b_comment,
-    "/admin/modify_cat" : modify_cat,
+    "/admin/" : bIndex,
+    "/admin/comment" : bComment,
+    "/admin/modify_cat" : modifyCat,
 }
